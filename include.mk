@@ -14,8 +14,10 @@ MXDIR       := $(ROOTDIR)$(TARGET).cubemx/
 OUTPUT_DIR  := $(ROOTDIR)build/$(CONFIGURATION)/
 OBJDIR      := $(OUTPUT_DIR)/obj
 
-INCDIRS +=      \
-$(COREDIR)inc   \
+INCDIRS +=          \
+$(COREDIR)inc       \
+$(COREDIR)inc\core  \
+$(COREDIR)chip
 
 SOURCES +=                          \
 $(COREDIR)src/abi.cpp               \
