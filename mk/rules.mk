@@ -95,6 +95,6 @@ stflash:$(BINARY).bin
 	$(STFLASH) $(FLASHSIZE) write $(BINARY).bin 0x8000000
 
 jflash:	$(BINARY).bin
-	$(JFLASH) -Autoconnect 1 -Device $(DEVICE) -If SWD -Speed 4000 -CommandFile flash_commands.jlink
+	$(JFLASH) -Autoconnect 1 -Device $(DEVICE) -If SWD -Speed 10000 -CommandFile flash_commands.jlink
 
 -include $(OBJS:.o=.d)
