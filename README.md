@@ -11,9 +11,6 @@ TARGET  := minimal-core-project
 RTOS    := freertos
 DEVICE  := stm32f103re
 
-STM32_PCLK1     := 36000000
-STM32_TIMCLK1   := 72000000
-
 INCDIRS         := include/
 SOURCES         := src/main.cpp
 
