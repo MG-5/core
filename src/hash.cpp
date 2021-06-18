@@ -1,8 +1,10 @@
 #include "core/hash.hpp"
 
+#ifndef BUILDCONFIG_TESTING_BUILD
 extern char _sidata;
 extern char _sdata;
 extern char _edata;
+#endif
 
 namespace
 {
@@ -10,7 +12,11 @@ constexpr uint32_t FlashStartAddress = 0x08000000;
 
 uint32_t getBinarySize()
 {
+#ifndef BUILDCONFIG_TESTING_BUILD
     return (&_sidata - reinterpret_cast<char *>(FlashStartAddress)) + (&_edata - &_sdata);
+#else
+    return 0;
+#endif
 }
 
 uint64_t fnv(const uint8_t *data, const uint8_t *const dataEnd)
