@@ -16,7 +16,7 @@ OBJDIR      := $(OUTPUT_DIR)/obj
 
 INCDIRS +=          \
 $(COREDIR)inc       \
-$(COREDIR)inc\core  \
+$(COREDIR)inc/core  \
 $(COREDIR)chip
 
 SOURCES +=                          \
