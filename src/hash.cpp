@@ -1,6 +1,7 @@
 #include "core/hash.hpp"
+#include "core/BuildConfiguration.hpp"
 
-#ifndef BUILDCONFIG_TESTING_BUILD
+#if OTTOCAR_IS_EMBEDDED_BUILD()
 extern char _sidata;
 extern char _sdata;
 extern char _edata;
@@ -12,7 +13,7 @@ constexpr uint32_t FlashStartAddress = 0x08000000;
 
 uint32_t getBinarySize()
 {
-#ifndef BUILDCONFIG_TESTING_BUILD
+#if OTTOCAR_IS_EMBEDDED_BUILD()
     return (&_sidata - reinterpret_cast<char *>(FlashStartAddress)) + (&_edata - &_sdata);
 #else
     return 0;
