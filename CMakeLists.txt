@@ -40,10 +40,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         )
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVersionHeader)
 
-
-# provide a static library containing freertos, named the same
-# its target_include_directories need to be public as core is depending on them
-target_link_libraries(${PROJECT_NAME} freertos)
+target_link_libraries(${PROJECT_NAME} freertos hal_headers)
 
 # embedded / testing / fuzzing
 if (core_BUILDCONFIGURATION STREQUAL "embedded")
