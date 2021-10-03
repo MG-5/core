@@ -21,8 +21,7 @@ $(COREDIR)chip
 
 SOURCES +=                          \
 $(COREDIR)src/abi.cpp               \
-$(COREDIR)src/build_information.cpp \
-$(COREDIR)src/fault_handler.c       \
+$(COREDIR)src/fault_handler.cpp       \
 $(COREDIR)src/hash.cpp              \
 $(COREDIR)src/std.cpp
 
@@ -48,7 +47,7 @@ INCDIRS += $(AS_INCLUDES:-I%=$(MXDIR)%)
 LDSCRIPT := $(MXDIR)$(LDSCRIPT)
 
 # Tracealyzer
-ifeq ($(TRACEALYZER_SUPPORT), 1)
+ifeq ($(OTTOCAR_TRACEALYZER_SUPPORT), 1)
 ifeq ($(RTOS),freertos)
 INCDIRS	+= $(COREDIR)Tracealyzer/Include
 SOURCES	+= $(wildcard $(COREDIR)Tracealyzer/Src/*.c)
