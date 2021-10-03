@@ -2,6 +2,11 @@
 
 #include "hal_header.h"
 
+/**
+ * @brief Defines that are necessary for uavcan stm32 driver's compile checks
+ * to pass. 
+ */
+
 #if defined(UAVCAN_STM32_NUM_IFACES)
 #if defined(STM32F4)
 #define CAN1_TX_IRQHandler CAN1_TX_IRQHandler
