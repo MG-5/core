@@ -29,7 +29,7 @@ add_library(${PROJECT_NAME} STATIC
         src/hash.cpp
         src/SafeAssert.cpp
         src/std.cpp
-        src/trace.cpp
+#        src/trace.cpp
         #   ${TracealyzerSources}
         )
 target_include_directories(${PROJECT_NAME} PUBLIC
