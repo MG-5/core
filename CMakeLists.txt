@@ -31,15 +31,16 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${TracealyzerInludes}
 )
 
-# cmake won't order dependencies right without this 
-target_link_libraries(${PROJECT_NAME} hal)
+# provide a static library containing freertos, named the same
+# its target_include_directories need to be public as core is depending on them
+target_link_libraries(${PROJECT_NAME} freertos)
 
 # embedded / testing / fuzzing
 if(core_BUILDCONFIGURATION STREQUAL "embedded")
     target_compile_definitions(${PROJECT_NAME} PUBLIC OTTOCAR_BUILDTYPE=2)
     message("You chose embedded build configuration.")
 elseif(core_BUILDCONFIGURATION STREQUAL "testing")
-    target_compile_definitions(${PROJECT_NAME} PUBLIC DOTTOCAR_BUILDTYPE=3)
+    target_compile_definitions(${PROJECT_NAME} PUBLIC OTTOCAR_BUILDTYPE=3)
     message("You chose testing build configuration.")
 elseif(core_BUILDCONFIGURATION STREQUAL "fuzzing")
     target_compile_definitions(${PROJECT_NAME} PUBLIC OTTOCAR_BUILDTYPE=4)
