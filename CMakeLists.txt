@@ -15,18 +15,13 @@ if (core_TRACEALYZER)
         Tracealyzer/Include)
 endif()
 
-execute_process(
-        COMMAND "git" rev-parse HEAD
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-        OUTPUT_VARIABLE git_hash_long
-        ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-message("git output: ${git_hash_long}")
-
-configure_file (
-        "${PROJECT_SOURCE_DIR}/Version.h.in"
-        "${PROJECT_BINARY_DIR}/include/core/Version.h"
-)
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/include/core)
+add_custom_target(generateVersionHeader
+        ${PROJECT_SOURCE_DIR}/scripts/generateVersionHeader.py
+        ${PROJECT_SOURCE_DIR}/../
+        ${PROJECT_BINARY_DIR}/include/core/Version.h
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
 add_library(${PROJECT_NAME} STATIC
     src/abi.cpp
@@ -37,13 +32,14 @@ add_library(${PROJECT_NAME} STATIC
     src/trace.cpp
     ${TracealyzerSources}
 )
-
 target_include_directories(${PROJECT_NAME} PUBLIC
     inc
     chip
     ${TracealyzerInludes}
     ${PROJECT_BINARY_DIR}/include
 )
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVersionHeader)
+
 
 # provide a static library containing freertos, named the same
 # its target_include_directories need to be public as core is depending on them

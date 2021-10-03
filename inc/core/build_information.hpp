@@ -1,27 +1,8 @@
 #pragma once
 
 #include "BuildConfiguration.hpp"
+#include "core/Version.h" // generated
 #include <cstdint>
-
-#ifndef BUILD_INFO_COMMIT_SHORT
-#define BUILD_INFO_COMMIT_SHORT 0
-#endif
-
-#ifndef BUILD_INFO_IS_DIRTY
-#define BUILD_INFO_IS_DIRTY false
-#endif
-
-#ifndef BUILD_INFO_TIME
-#define BUILD_INFO_TIME ""
-#endif
-
-#ifndef BUILD_INFO_COMMIT_LONG
-#define BUILD_INFO_COMMIT_LONG ""
-#endif
-
-#ifndef BUILD_INFO_BRANCH
-#define BUILD_INFO_BRANCH ""
-#endif
 
 namespace core
 {

@@ -22,7 +22,7 @@ branch = repo.active_branch.name
 currentTime = str(datetime.datetime.now().isoformat())
 
 
-fileContent = '#define BUILD_INFO_COMMIT_SHORT "' + commitHashShort + '"\n'
+fileContent = '#define BUILD_INFO_COMMIT_SHORT 0x' + commitHashShort + '\n'
 if isDirty:
     fileContent += '#define BUILD_INFO_IS_DIRTY true\n'
 else:
@@ -47,7 +47,7 @@ except:
     print("Old file not found")
 
 if doRegen:
-    with open(versionHeaderPath, mode='w') as newFile:
+    with open(versionHeaderPath, mode='w+') as newFile:
         newFile.write(fileContent)
         print("Regenerated")
         exit(0)
