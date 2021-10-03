@@ -15,6 +15,19 @@ if (core_TRACEALYZER)
         Tracealyzer/Include)
 endif()
 
+execute_process(
+        COMMAND "git" rev-parse HEAD
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+        OUTPUT_VARIABLE git_hash_long
+        ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+message("git output: ${git_hash_long}")
+
+configure_file (
+        "${PROJECT_SOURCE_DIR}/Version.h.in"
+        "${PROJECT_BINARY_DIR}/include/core/Version.h"
+)
+
 add_library(${PROJECT_NAME} STATIC
     src/abi.cpp
     src/fault_handler.cpp
@@ -29,6 +42,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     inc
     chip
     ${TracealyzerInludes}
+    ${PROJECT_BINARY_DIR}/include
 )
 
 # provide a static library containing freertos, named the same

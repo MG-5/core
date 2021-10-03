@@ -1,0 +1,3 @@
+#pragma once
+
+#define BUILD_INFO_COMMIT_LONG "@git_hash_long@"
