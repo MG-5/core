@@ -14,6 +14,8 @@ project(core VERSION 0.0.1 LANGUAGES CXX C)
 #    list(APPEND TracealyzerInludes 
 #        Tracealyzer/Include)
 #endif()
+
+# generate build information every time compile is started
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/include/core)
 add_custom_target(generateVersionHeader
         ${PROJECT_SOURCE_DIR}/scripts/generateVersionHeader.py
