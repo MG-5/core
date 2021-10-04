@@ -1,3 +1,4 @@
+include_guard(GLOBAL)
 include(${CMAKE_CURRENT_LIST_DIR}/extractBuildinfoFromMakefile.cmake)
 
 # Invokes GET_CUBEMX_VARIABLES to retrieve defines and options from cubemx makefile

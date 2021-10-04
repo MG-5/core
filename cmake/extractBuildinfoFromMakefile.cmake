@@ -1,3 +1,4 @@
+include_guard(GLOBAL)
 # call specially created make file that prints out variables
 # expecting output from the following make code
 #

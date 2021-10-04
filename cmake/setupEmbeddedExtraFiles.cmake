@@ -1,3 +1,4 @@
+include_guard(GLOBAL)
 # assumes CMAKE_OBJCOPY, CMAKE_OBJDUMP is correctly setup globally
 # also assumes target FirmwareName already exists (target = add_executable or add_library)
 # modifies target so that it generates with TargetName.elf filename

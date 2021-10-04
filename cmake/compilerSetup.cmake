@@ -1,3 +1,4 @@
+include_guard(GLOBAL)
 # fixes compiler detection with arm-none-eabi-gcc as cmake tries to
 # build an executable but bare metal doesn't work like this
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
