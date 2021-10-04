@@ -14,7 +14,7 @@ include_guard(GLOBAL)
 # MakeExport_SOURCES, MakeExport_MCU_Flags, MakeExport_DEFS, MakeExport_INCLUDES, MakeExport_LDSCRIPT
 # prefixDirectory will be applied to sources, includes and ldscript
 function(GET_CUBEMX_VARIABLES prefixDirectory)
-    execute_process(COMMAND make --no-print-directory -C ${PROJECT_SOURCE_DIR}/drive_controller.cubemx/
+    execute_process(COMMAND make --no-print-directory -C ${PROJECT_SOURCE_DIR}/${prefixDirectory}/
             OUTPUT_VARIABLE out)
 
     # split output into list
