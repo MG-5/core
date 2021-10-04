@@ -5,8 +5,19 @@ include(${CMAKE_CURRENT_LIST_DIR}/extractBuildinfoFromMakefile.cmake)
 # assumes halDirectory is given as relativ path seen from folder of top level script
 # (linker needs full path to .ld file, so correct path assembly is critical)
 
-function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard Optimisation)
+function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard)
     GET_CUBEMX_VARIABLES(${halDirectory})
+
+    set(Optimisaiton)
+    if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+        message("SETUP_BUILD configuring for Release.")
+        set(Optimisation -O2 -g)
+    elseif (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+        message("SETUP_BUILD configuring for Debug.")
+        set(Optimisation -Og -g)
+    else ()
+        message(FATAL_ERROR "Unknown Buildtype")
+    endif ()
 
     set(Specs --specs=nano.specs --specs=nosys.specs)
     set(CFlags -std=${Cstandard} ${Optimisation} -fno-builtin-log)
