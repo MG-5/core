@@ -31,6 +31,12 @@ struct BuildConfiguration
     static constexpr bool isFuzzingBuild = false;
 #endif
 
+#if OTTOCAR_IS_EMULATOR_BUILD()
+    static constexpr bool isEmulatorBuild = true;
+#else
+    static constexpr bool isEmulatorBuild = false;
+#endif
+
 #if defined(OTTOCAR_BUILDCONFIG_DEBUG)
     static constexpr bool isDebugBuild = true;
 #else
@@ -47,7 +53,7 @@ struct BuildConfiguration
     {
         // sanity checks for macros
         static_assert(
-            ((isEmbeddedBuild ? 1 : 0) + (isTestingBuild ? 1 : 0) + (isFuzzingBuild ? 1 : 0)) == 1);
+            ((isEmbeddedBuild ? 1 : 0) + (isTestingBuild ? 1 : 0) + (isFuzzingBuild ? 1 : 0) + (isEmulatorBuild ? 1 : 0)) == 1);
         static_assert(((isDebugBuild ? 1 : 0) + (isReleaseBuild ? 1 : 0)) == 1);
     }
 };

@@ -40,7 +40,7 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVer
 
 target_link_libraries(${PROJECT_NAME} freertos hal_headers)
 
-# embedded / testing / fuzzing
+# embedded / testing / fuzzing / emulator
 if (core_BUILDCONFIGURATION STREQUAL "embedded")
     target_compile_definitions(${PROJECT_NAME} PUBLIC OTTOCAR_BUILDTYPE=2)
     message("You chose embedded build configuration.")
@@ -50,6 +50,9 @@ elseif (core_BUILDCONFIGURATION STREQUAL "testing")
 elseif (core_BUILDCONFIGURATION STREQUAL "fuzzing")
     target_compile_definitions(${PROJECT_NAME} PUBLIC OTTOCAR_BUILDTYPE=4)
     message("You chose fuzzing build configuration.")
+elseif (core_BUILDCONFIGURATION STREQUAL "emulator")
+    target_compile_definitions(${PROJECT_NAME} PUBLIC OTTOCAR_BUILDTYPE=5)
+    message("You chose emulator build configuration.")
 else ()
     message(FATAL_ERROR "Please define a macro for your core_BUILDCONFIGURATION. You chose '${core_BUILDTYPE}'")
 endif ()
