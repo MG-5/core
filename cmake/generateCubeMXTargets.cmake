@@ -51,6 +51,7 @@ function(GENERATE_CUBEMX_TARGETS halDirectory generateFreertosTarget)
 
     add_library(hal_headers INTERFACE)
     target_include_directories(hal_headers INTERFACE ${HalIncludes})
+    target_compile_definitions(hal_headers INTERFACE ${MakeExport_DEFS})
 
     add_library(hal STATIC
             ${HalSources}
