@@ -18,7 +18,11 @@ if len(repo.submodules) == 0:
 commitHashLong = str(repo.head.object.hexsha)
 commitHashShort = commitHashLong[:8]
 isDirty = repo.is_dirty()
-branch = repo.active_branch.name
+branch = "detached_head"
+try:
+    branch = repo.active_branch.name
+except:
+    print("git repository is in detached head state")
 currentTime = str(datetime.datetime.now().isoformat())
 
 
