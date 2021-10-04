@@ -40,8 +40,6 @@ function(GENERATE_CUBEMX_TARGETS halDirectory generateFreertosTarget)
         endif ()
     endforeach ()
 
-    message("${HalSources}")
-
     if (generateFreertosTarget)
         add_library(freertos STATIC
                 ${FreertosSources})
