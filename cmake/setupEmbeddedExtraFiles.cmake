@@ -15,7 +15,7 @@ function(SETUP_EXTRA_FILE_GENERATION TargetName)
     add_custom_command(
             TARGET ${TargetName}
             POST_BUILD
-            COMMAND ${CMAKE_OBJCOPY} ARGS -O ihex "${CMAKE_BINARY_DIR}/${TargetName}.elf" "${CMAKE_BINARY_DIR}/${TargetName}.hex"
+            COMMAND ${CMAKE_OBJCOPY} ARGS -O ihex "${CMAKE_BINARY_DIR}/${TargetName}.elf" "${CMAKE_BINARY_DIR}/${TargetName}.bin"
     )
 
     add_custom_command(
