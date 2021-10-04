@@ -1,19 +1,20 @@
 cmake_minimum_required(VERSION 3.0)
 project(core VERSION 0.0.1 LANGUAGES CXX C)
 
-#set(TracealyzerSources "")
-#set(TracealyzerInludes "")
 
-#if (core_TRACEALYZER)
-#    list(APPEND TracealyzerSources 
-#        Tracealyzer/Src/SEGGER_RTT.c
-#        Tracealyzer/Src/trcKernelPort.c
-#        Tracealyzer/Src/trcSnapshotRecorder.c
-#        Tracealyzer/Src/trcStreamingPort.c
-#        Tracealyzer/Src/trcStreamingRecorder.c)
-#    list(APPEND TracealyzerInludes 
-#        Tracealyzer/Include)
-#endif()
+add_library(tracealyzer
+        Tracealyzer/Src/SEGGER_RTT.c
+        Tracealyzer/Src/trcKernelPort.c
+        Tracealyzer/Src/trcSnapshotRecorder.c
+        Tracealyzer/Src/trcStreamingPort.c
+        Tracealyzer/Src/trcStreamingRecorder.c
+        src/trace.cpp
+        )
+target_include_directories(tracealyzer PUBLIC
+        Tracealyzer/Include
+        )
+target_link_libraries(tracealyzer PUBLIC
+        core freertos)
 
 # generate build information every time compile is started
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/include/core)
@@ -29,13 +30,10 @@ add_library(${PROJECT_NAME} STATIC
         src/hash.cpp
         src/SafeAssert.cpp
         src/std.cpp
-#        src/trace.cpp
-        #   ${TracealyzerSources}
         )
 target_include_directories(${PROJECT_NAME} PUBLIC
         inc
         chip
-        #    ${TracealyzerInludes}
         ${PROJECT_BINARY_DIR}/include
         )
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVersionHeader)
@@ -66,12 +64,3 @@ elseif (${CMAKE_BUILD_TYPE} STREQUAL "Release")
 else ()
     message(FATAL_ERROR "Please define a macro for your CMAKE_BUILD_TYPE. You chose '${CMAKE_BUILD_TYPE}' which is not implemented yet")
 endif ()
-
-# tracealyzer support
-#if (core_TRACEALYZER)
-#    target_compile_definitions(${PROJECT_NAME} PUBLIC  OTTOCAR_TRACEALYZER_SUPPORT=1)
-#    message("You chose to enable tracealyzer support.")
-#else()
-#    target_compile_definitions(${PROJECT_NAME} PUBLIC OTTOCAR_TRACEALYZER_SUPPORT=0)
-#    message("You chose NO tracealyzer support.")
-#endif()

@@ -1,6 +1,8 @@
-#include <core/trace.hpp>
+#include "chip.h"
+#include <bus-node-base/trace.hpp>
 
-#if OTTOCAR_IS_TRACEALYZER_SUPPORTED()
+#if OTTOCAR_IS_EMBEDDED_BUILD()
+#include <chip.h>
 namespace bus_node_base
 {
 void Trace::print(const char *str)
@@ -15,14 +17,4 @@ void Trace::print(const char *str)
     ITM_SendChar('\n');
 }
 } // namespace bus_node_base
-
-#else 
-
-namespace bus_node_base
-{
-void Trace::print(const char *str)
-{
-}
-} // namespace bus_node_base
-
 #endif
