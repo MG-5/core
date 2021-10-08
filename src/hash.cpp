@@ -22,11 +22,11 @@ uint32_t getBinarySize()
 
 uint64_t fnv(const uint8_t *data, const uint8_t *const dataEnd)
 {
-    return bus_node_base::fnvWithSeed(bus_node_base::HASH_SEED, data, dataEnd);
+    return core::hash::fnvWithSeed(core::hash::HASH_SEED, data, dataEnd);
 }
 } // namespace
 
-namespace bus_node_base
+namespace core::hash
 {
 uint64_t computeFirmwareHash()
 {

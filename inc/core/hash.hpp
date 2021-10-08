@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace bus_node_base
+namespace core::hash
 {
     static constexpr uint64_t HASH_SEED = 0xcbf29ce484222325;
     uint64_t fnvWithSeed(uint64_t hash, const uint8_t *data, const uint8_t *const dataEnd);
