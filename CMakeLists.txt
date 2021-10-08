@@ -1,20 +1,27 @@
 cmake_minimum_required(VERSION 3.0)
 project(core VERSION 0.0.1 LANGUAGES CXX C)
 
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/detectCompilerType.cmake)
+DETECT_COMPILER_TYPE()
 
-add_library(tracealyzer
-        Tracealyzer/Src/SEGGER_RTT.c
-        Tracealyzer/Src/trcKernelPort.c
-        Tracealyzer/Src/trcSnapshotRecorder.c
-        Tracealyzer/Src/trcStreamingPort.c
-        Tracealyzer/Src/trcStreamingRecorder.c
-        src/trace.cpp
-        )
-target_include_directories(tracealyzer PUBLIC
-        Tracealyzer/Include
-        )
-target_link_libraries(tracealyzer PUBLIC
-        core freertos)
+# following target doesn't compile on non embedded builds
+# exclusion is necessary for usage of "run all tests" cmake feature
+# which forces everything to compile, even when unused
+if (${isEmbeddedCompiler})
+    add_library(tracealyzer
+            Tracealyzer/Src/SEGGER_RTT.c
+            Tracealyzer/Src/trcKernelPort.c
+            Tracealyzer/Src/trcSnapshotRecorder.c
+            Tracealyzer/Src/trcStreamingPort.c
+            Tracealyzer/Src/trcStreamingRecorder.c
+            src/trace.cpp
+            )
+    target_include_directories(tracealyzer PUBLIC
+            Tracealyzer/Include
+            )
+    target_link_libraries(tracealyzer PUBLIC
+            core freertos)
+endif ()
 
 # generate build information every time compile is started
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/include/core)

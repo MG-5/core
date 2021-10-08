@@ -1,13 +1,18 @@
 include_guard(GLOBAL)
-# fixes compiler detection with arm-none-eabi-gcc as cmake tries to
-# build an executable but bare metal doesn't work like this
-set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+include(${CMAKE_CURRENT_LIST_DIR}/detectCompilerType.cmake)
+DETECT_COMPILER_TYPE()
 
-if(${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
+if (isEmbeddedCompiler)
+    # fixes compiler detection with arm-none-eabi-gcc as cmake tries to
+    # build an executable but bare metal doesn't work like this
+    set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
+endif ()
+
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
     message(FATAL_ERROR "In-source build detected! Generate cmake in an extra folder to avoid a mess of files generated in your folder")
-endif()
+endif ()
 
-if (${CMAKE_C_COMPILER} MATCHES "arm-none-eabi-")
+if (${isEmbeddedCompiler})
     message("arm compiler detected")
     set(CMAKE_SYSTEM_NAME Generic)
     set(CMAKE_SYSTEM_PROCESSOR arm)
@@ -25,9 +30,6 @@ if (${CMAKE_C_COMPILER} MATCHES "arm-none-eabi-")
     set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
     set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
     set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
-
-    set(isEmbeddedBuild true)
-else()
+else ()
     message("non-arm compiler detected")
-    set(isEmbeddedBuild false)
-endif()
+endif ()

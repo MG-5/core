@@ -1,5 +1,6 @@
 include_guard(GLOBAL)
 include(${CMAKE_CURRENT_LIST_DIR}/extractBuildinfoFromMakefile.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/detectCompilerType.cmake)
 
 # Extracts C and H files from cubemx makefile and creates three targets
 # freertos - realtime os complete with heap, and port
@@ -7,6 +8,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/extractBuildinfoFromMakefile.cmake)
 # hal - complete hal with sources and headers
 function(GENERATE_CUBEMX_TARGETS halDirectory generateFreertosTarget)
     GET_CUBEMX_VARIABLES(${halDirectory})
+    DETECT_COMPILER_TYPE()
 
     set(HalSources)
     set(FreertosSources)
@@ -40,19 +42,24 @@ function(GENERATE_CUBEMX_TARGETS halDirectory generateFreertosTarget)
         endif ()
     endforeach ()
 
-    if (generateFreertosTarget)
-        add_library(freertos STATIC
-                ${FreertosSources})
-        target_include_directories(freertos PUBLIC ${FreertosIncludes})
-        target_link_libraries(freertos PUBLIC hal_headers core)
-    endif ()
-
     add_library(hal_headers INTERFACE)
     target_include_directories(hal_headers INTERFACE ${HalIncludes})
     target_compile_definitions(hal_headers INTERFACE ${MakeExport_DEFS})
 
-    add_library(hal STATIC
-            ${HalSources}
-            )
-    target_link_libraries(hal PUBLIC hal_headers freertos)
+    # following targets don't compile on non embedded builds
+    # exclusion is necessary for usage of "run all tests" cmake feature
+    # which forces everything to compile, even when unused
+    if (${isEmbeddedCompiler})
+        # freertos
+        add_library(freertos STATIC
+                ${FreertosSources})
+        target_include_directories(freertos PUBLIC ${FreertosIncludes})
+        target_link_libraries(freertos PUBLIC hal_headers core)
+
+        # complete hal
+        add_library(hal STATIC
+                ${HalSources}
+                )
+        target_link_libraries(hal PUBLIC hal_headers freertos)
+    endif ()
 endfunction()
