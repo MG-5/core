@@ -46,20 +46,24 @@ function(GENERATE_CUBEMX_TARGETS halDirectory generateFreertosTarget)
     target_include_directories(hal_headers INTERFACE ${HalIncludes})
     target_compile_definitions(hal_headers INTERFACE ${MakeExport_DEFS})
 
-    # following targets don't compile on non embedded builds
-    # exclusion is necessary for usage of "run all tests" cmake feature
-    # which forces everything to compile, even when unused
-    if (${isEmbeddedCompiler})
+    # in testing a custom freertos version is built
+    # this must be excluded to avoid duplicate target issues
+    if (${generateFreertosTarget})
         # freertos
         add_library(freertos STATIC
                 ${FreertosSources})
         target_include_directories(freertos PUBLIC ${FreertosIncludes})
         target_link_libraries(freertos PUBLIC hal_headers core)
-
-        # complete hal
-        add_library(hal STATIC
-                ${HalSources}
-                )
-        target_link_libraries(hal PUBLIC hal_headers freertos)
     endif ()
+
+    # complete hal
+    # following target doesn't compile on non embedded builds
+    # explicitly exclude from "All" build triggered by CTest
+    add_library(hal STATIC
+            ${HalSources}
+            )
+    target_link_libraries(hal PUBLIC hal_headers freertos)
+    set_target_properties(hal PROPERTIES
+            EXCLUDE_FROM_ALL TRUE
+            EXCLUDE_FROM_DEFAULT_BUILD TRUE)
 endfunction()
