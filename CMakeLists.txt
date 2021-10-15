@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(core VERSION 0.0.1 LANGUAGES CXX C)
 
-include(${CMAKE_CURRENT_LIST_DIR}/cmake/detectCompilerType.cmake)
-DETECT_COMPILER_TYPE()
-
 add_library(tracealyzer
         Tracealyzer/Src/SEGGER_RTT.c
         Tracealyzer/Src/trcKernelPort.c
