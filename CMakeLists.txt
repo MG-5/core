@@ -74,3 +74,27 @@ elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
 else ()
     message(FATAL_ERROR "Please define a macro for your CMAKE_BUILD_TYPE. You chose '${CMAKE_BUILD_TYPE}' which is not implemented yet. Did you forget to add -DCMAKE_BUILD_TYPE=Release or -DCMAKE_BUILD_TYPE=Debug?")
 endif ()
+
+
+if (NOT ${isEmbeddedCompiler})
+    include(CTest)
+    find_package(PkgConfig)
+    pkg_search_module(GTEST REQUIRED gtest)
+    pkg_search_module(GMOCK REQUIRED gmock)
+
+    add_executable(${PROJECT_NAME}_test
+            tests/src/main.cpp
+            tests/src/SafeAssertTest.cpp
+            tests/src/HashTest.cpp
+            )
+    target_include_directories(${PROJECT_NAME}_test PRIVATE
+            tests/include)
+    target_link_libraries(${PROJECT_NAME}_test PRIVATE
+            ${GTEST_LDFLAGS}
+            ${GMOCK_LDFLAGS}
+            gcov
+            ${PROJECT_NAME})
+    target_link_options(${PROJECT_NAME}_test PRIVATE --coverage)
+    target_compile_options(${PROJECT_NAME}_test PRIVATE ${GTEST_CFLAGS} ${GMOCK_CFLAGS} --coverage)
+    add_test(${PROJECT_NAME} ${PROJECT_NAME}_test)
+endif ()

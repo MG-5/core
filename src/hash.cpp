@@ -1,5 +1,6 @@
 #include "core/hash.hpp"
 #include "core/BuildConfiguration.hpp"
+#include "core/SafeAssert.h"
 
 #if OTTOCAR_IS_EMBEDDED_BUILD()
 extern char _sidata;
@@ -30,13 +31,19 @@ namespace core::hash
 {
 uint64_t computeFirmwareHash()
 {
+#if OTTOCAR_IS_EMBEDDED_BUILD()
     return fnv(reinterpret_cast<uint8_t *>(FlashStartAddress),
                reinterpret_cast<uint8_t *>(FlashStartAddress) + getBinarySize());
+#else
+    return FirmwareHashTestingValue;
+#endif
 }
 
 uint64_t fnvWithSeed(uint64_t hash, const uint8_t *data, const uint8_t *const dataEnd)
 {
-    constexpr uint64_t MagicPrime = 0x00000100000001b3;
+    SafeAssert(data < dataEnd);
+    SafeAssert(data != nullptr);
+    SafeAssert(dataEnd != nullptr);
 
     for (; data < dataEnd; data++)
     {
