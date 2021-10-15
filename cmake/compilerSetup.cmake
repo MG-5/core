@@ -1,6 +1,7 @@
 include_guard(GLOBAL)
 include(${CMAKE_CURRENT_LIST_DIR}/detectCompilerType.cmake)
 DETECT_COMPILER_TYPE()
+add_compile_options(-fdiagnostics-color)
 
 if (isEmbeddedCompiler)
     # fixes compiler detection with arm-none-eabi-gcc as cmake tries to
