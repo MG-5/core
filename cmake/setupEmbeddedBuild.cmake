@@ -45,14 +45,12 @@ function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard)
     )
     add_definitions(${MakeExport_DEFS})
 
-    set(LinkOptions
-            ${Specs}
+    add_link_options(${Specs}
             --static
             -Wl,--gc-sections
             -Wl,--print-memory-usage
             -Wl,-Map=${firmwareName}.map
             -Wl,--start-group -lc_nano -lgcc -lnosys -Wl,--end-group
             -T${CMAKE_CURRENT_SOURCE_DIR}/${MakeExport_LDSCRIPT}
-            ${MakeExport_MCU_Flags}
-            PARENT_SCOPE)
+            ${MakeExport_MCU_Flags})
 endfunction()
