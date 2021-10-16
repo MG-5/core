@@ -20,7 +20,7 @@ function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard)
         message(FATAL_ERROR "Unknown Buildtype")
     endif ()
 
-    set(Specs --specs=nano.specs --specs=nosys.specs)
+    set(Specs --specs=nano.specs)
     set(CFlags -std=${Cstandard} ${Optimisation} -fno-builtin-log)
     set(CppFlags -ffunction-sections -fdata-sections -fno-common
             -pedantic -Wall -Wextra
@@ -51,7 +51,7 @@ function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard)
             -Wl,--gc-sections
             -Wl,--print-memory-usage
             -Wl,-Map=${firmwareName}.map
-            -Wl,--start-group -lc -lgcc -lnosys -Wl,--end-group
+            -Wl,--start-group -lc_nano -lgcc -lnosys -Wl,--end-group
             -T${CMAKE_CURRENT_SOURCE_DIR}/${MakeExport_LDSCRIPT}
             ${MakeExport_MCU_Flags}
             PARENT_SCOPE)
