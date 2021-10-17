@@ -2,12 +2,16 @@ include_guard(GLOBAL)
 include(${CMAKE_CURRENT_LIST_DIR}/extractBuildinfoFromMakefile.cmake)
 
 # Invokes GET_CUBEMX_VARIABLES to retrieve defines and options from cubemx makefile
-# exposes LinkOptions to parent scope for usage further down below
-# assumes halDirectory is given as relativ path seen from folder of top level script
+# assumes halDirectory is given as relative path seen from folder of top level script
 # (linker needs full path to .ld file, so correct path assembly is critical)
 
 function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard)
     GET_CUBEMX_VARIABLES(${halDirectory})
+
+    if (NOT DEFINED MakeExport_SOURCES OR NOT DEFINED MakeExport_MCU_Flags OR NOT DEFINED MakeExport_DEFS OR NOT DEFINED MakeExport_INCLUDES
+            OR NOT DEFINED MakeExport_LDSCRIPT)
+        message(FATAL_ERROR "Required variables are not in scope")
+    endif ()
 
     set(Optimisaiton)
     if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
