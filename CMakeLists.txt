@@ -46,6 +46,9 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVer
 target_link_libraries(${PROJECT_NAME} freertos hal_headers)
 
 # embedded / testing / fuzzing / emulator
+if (NOT DEFINED core_BUILDCONFIGURATION)
+    message(FATAL_ERROR "Required variable core_BUILDCONFIGURATION is not defined")
+endif()
 if (core_BUILDCONFIGURATION STREQUAL "embedded")
     target_compile_definitions(${PROJECT_NAME} PUBLIC OTTOCAR_BUILDTYPE=2)
     message("You chose embedded build configuration.")
@@ -73,7 +76,9 @@ else ()
     message(FATAL_ERROR "Please define a macro for your CMAKE_BUILD_TYPE. You chose '${CMAKE_BUILD_TYPE}' which is not implemented yet. Did you forget to add -DCMAKE_BUILD_TYPE=Release or -DCMAKE_BUILD_TYPE=Debug?")
 endif ()
 
-
+if (NOT DEFINED isEmbeddedCompiler)
+    message(FATAL_ERROR "Required variable isEmbeddedCompiler is not in scope")
+endif ()
 if (NOT ${isEmbeddedCompiler})
     include(CTest)
     find_package(PkgConfig)
