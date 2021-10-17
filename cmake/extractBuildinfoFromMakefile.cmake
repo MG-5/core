@@ -41,7 +41,7 @@ function(GET_CUBEMX_VARIABLES prefixDirectory)
 
         # get first element (name of entry), save it and remove it from the main list
         list(GET entryList 0 entryName)
-        list(REMOVE_AT entryList ${entryList} "0")
+        list(REMOVE_AT entryList 0)
 
         if(entryName MATCHES "^MakeExport_SOURCES")
             list(TRANSFORM entryList PREPEND "${prefixDirectory}/")
