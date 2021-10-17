@@ -59,7 +59,7 @@ function(GENERATE_CUBEMX_TARGETS halDirectory generateFreertosTarget)
     # complete hal
     # following target doesn't compile on non embedded builds
     # explicitly exclude from "All" build triggered by CTest
-    add_library(hal STATIC
+    add_library(hal OBJECT
             ${HalSources}
             )
     target_link_libraries(hal PUBLIC hal_headers freertos)
