@@ -3,6 +3,9 @@ include(${CMAKE_CURRENT_LIST_DIR}/detectCompilerType.cmake)
 DETECT_COMPILER_TYPE()
 add_compile_options(-fdiagnostics-color)
 
+if (NOT DEFINED isEmbeddedCompiler)
+    message(FATAL_ERROR "Required variable isEmbeddedCompiler is not in scope")
+endif ()
 if (isEmbeddedCompiler)
     # fixes compiler detection with arm-none-eabi-gcc as cmake tries to
     # build an executable but bare metal doesn't work like this
