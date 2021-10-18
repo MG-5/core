@@ -72,4 +72,4 @@ if __name__ == "__main__":
     text_files = glob.glob(path + "/**/*.a", recursive=True)
     for file in text_files:
         analyzeAndCheckStaticLib(file)
-    print("All static libraries ok")
+    print("Checked " + str(len(text_files)) + " static libraries, all ok.")
