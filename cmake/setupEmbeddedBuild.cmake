@@ -49,11 +49,14 @@ function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard)
     )
     add_definitions(${MakeExport_DEFS})
 
+    # -u _printf_float removes a bunch of dependencies on various
+    # internal libc functions. Adding nosys specs would achieve the same thing
     add_link_options(${Specs}
             --static
             -Wl,--gc-sections
             -Wl,--print-memory-usage
             -Wl,-Map=${firmwareName}.map
+            -u _printf_float
             -Wl,--start-group -lc_nano -lgcc -lnosys -Wl,--end-group
             -T${CMAKE_CURRENT_SOURCE_DIR}/${MakeExport_LDSCRIPT}
             ${MakeExport_MCU_Flags})
