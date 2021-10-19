@@ -25,6 +25,7 @@ function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard)
     endif ()
 
     set(Specs --specs=nano.specs)
+    set(Specs --specs=nosys.specs)
     set(CFlags -std=${Cstandard} ${Optimisation} -fno-builtin-log)
     set(CppFlags -ffunction-sections -fdata-sections -fno-common
             -pedantic -Wall -Wextra
