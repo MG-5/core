@@ -26,9 +26,17 @@ if (${isEmbeddedCompiler})
     # this of course breakes when you pull apart your compiler programs
     # but why would you do that?
     get_filename_component(CompilerPath "${CMAKE_C_COMPILER}" PATH)
-    set(CMAKE_CXX_COMPILER ${CompilerPath}/arm-none-eabi-g++ CACHE INTERNAL "")
-    set(CMAKE_OBJCOPY ${CompilerPath}/arm-none-eabi-objcopy CACHE INTERNAL "")
-    set(CMAKE_OBJDUMP ${CompilerPath}/arm-none-eabi-objdump CACHE INTERNAL "")
+    if (CompilerPath STREQUAL "")
+        # some ci compilers dont include the full path to compiler
+        # assume default names for everything
+        set(CMAKE_CXX_COMPILER "arm-none-eabi-g++" CACHE INTERNAL "")
+        set(CMAKE_OBJCOPY "arm-none-eabi-objcopy" CACHE INTERNAL "")
+        set(CMAKE_OBJDUMP "arm-none-eabi-objdump" CACHE INTERNAL "")
+    else()
+        set(CMAKE_CXX_COMPILER ${CompilerPath}/arm-none-eabi-g++ CACHE INTERNAL "")
+        set(CMAKE_OBJCOPY ${CompilerPath}/arm-none-eabi-objcopy CACHE INTERNAL "")
+        set(CMAKE_OBJDUMP ${CompilerPath}/arm-none-eabi-objdump CACHE INTERNAL "")
+    endif()
 
     set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
     set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
