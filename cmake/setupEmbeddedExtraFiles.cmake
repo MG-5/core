@@ -20,13 +20,15 @@ function(SETUP_EXTRA_FILE_GENERATION TargetName PathToCore)
     add_custom_command(
             TARGET ${TargetName}
             POST_BUILD
-            COMMAND ${CMAKE_OBJCOPY} ARGS -O ihex "${CMAKE_BINARY_DIR}/${TargetName}.elf" "${CMAKE_BINARY_DIR}/${TargetName}.bin"
+            COMMAND ${CMAKE_OBJCOPY} ARGS -O ihex ${CMAKE_BINARY_DIR}/${TargetName}.elf ${CMAKE_BINARY_DIR}/${TargetName}.bin
+            BYPRODUCTS ${CMAKE_BINARY_DIR}/${TargetName}.bin
     )
 
     add_custom_command(
             TARGET ${TargetName}
             POST_BUILD
-            COMMAND ${CMAKE_OBJDUMP} ARGS -S "${CMAKE_BINARY_DIR}/${TargetName}.elf" > "${CMAKE_BINARY_DIR}/${TargetName}.list"
+            COMMAND ${CMAKE_OBJDUMP} ARGS -S ${CMAKE_BINARY_DIR}/${TargetName}.elf > ${CMAKE_BINARY_DIR}/${TargetName}.list
+            BYPRODUCTS ${CMAKE_BINARY_DIR}/${TargetName}.list
     )
 
     add_custom_command(
