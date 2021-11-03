@@ -34,3 +34,5 @@ extern "C"
 // avoids compiling in a bunch of path strings for embedded
 #define SafeAssert(cond) SafeAssert_Aux(cond, 0, "NOVAL") // NOLINT
 #endif
+
+#define UAVCAN_ASSERT(cond) SafeAssert(cond)
