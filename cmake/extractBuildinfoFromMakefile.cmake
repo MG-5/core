@@ -1,14 +1,6 @@
 include_guard(GLOBAL)
 # call specially created make file that prints out variables
-# expecting output from the following make code
-#
-# export:
-#	@printf 'MakeExport_SOURCES $(C_SOURCES) $(ASM_SOURCES)"'
-#	@printf 'MakeExport_MCU_Flags $(MCU)'
-#	@printf 'MakeExport_DEFS $(AS_DEFS) $(C_DEFS)'
-#	@printf 'MakeExport_INCLUDES $(AS_INCLUDES) $(C_INCLUDES)'
-#	@printf 'MakeExport_LDSCRIPT $(LDSCRIPT)'
-
+# expecting output from the makefile code in mk/CubeMXMakefileInstrumentation.mk
 
 # Sets the following variables in parent scope
 # MakeExport_SOURCES, MakeExport_MCU_Flags, MakeExport_DEFS, MakeExport_INCLUDES, MakeExport_LDSCRIPT
