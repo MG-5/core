@@ -17,14 +17,13 @@ function(GET_CUBEMX_VARIABLES prefixDirectory)
     execute_process(COMMAND make --no-print-directory -C ${PROJECT_SOURCE_DIR}/${prefixDirectory}/
             OUTPUT_VARIABLE out)
 
-
     # split output into list
     # a list is a string separated by ; for cmake btw
-    string(REPLACE "\n" ";" out ${out})
+    string(REPLACE "\n" ";" out "${out}")
     list(LENGTH out length)
     if (NOT length MATCHES 6)
         # 5 entries + one empty line
-        message(FATAL_ERROR "Unable to extract information from makefile: list of lists is too short. Did you properly prepare it with the export statement?")
+        message(FATAL_ERROR "Unable to extract information from makefile: list of lists is too short. Did you properly prepare/instrument it?")
     endif ()
 
     set(foundSources false)
