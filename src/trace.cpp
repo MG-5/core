@@ -1,5 +1,5 @@
 #include "chip.h"
-#include <bus-node-base/trace.hpp>
+#include <core/trace.hpp>
 
 #if OTTOCAR_IS_EMBEDDED_BUILD()
 #include <chip.h>
