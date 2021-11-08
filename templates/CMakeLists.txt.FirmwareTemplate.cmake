@@ -97,7 +97,4 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 # Sets up generation of .list and .bin files after your firmware has generated.
 # Makes firmware image generate as an .elf file.
 # Also performs checks for some common bugs that can happen in buildsystem configuration
-#TODO update the second parameter's relative path to core. This is seen from where this exact CMakeList.txt file
-#TODO is. This is the only exception from the comment on the splitter file's top.
-#TODO so if this cmake file is in src/ and your core is in core/ you have to put in ../core
-SETUP_EXTRA_FILE_GENERATION(${PROJECT_NAME} ..)
+SETUP_EXTRA_FILE_GENERATION(${PROJECT_NAME})
