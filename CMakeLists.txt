@@ -43,7 +43,9 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         )
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVersionHeader)
 
-target_link_libraries(${PROJECT_NAME} freertos hal_headers)
+add_subdirectory(libraries/span)
+
+target_link_libraries(${PROJECT_NAME} freertos hal_headers span)
 
 # embedded / testing / fuzzing / emulator
 if (NOT DEFINED core_BUILDCONFIGURATION)

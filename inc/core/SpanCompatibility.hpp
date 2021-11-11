@@ -1,6 +1,6 @@
 #pragma once
 
-#if __has_include(<span>)
+#if __cplusplus > 201703L
 #include <span>
 #else
 #include <tcb/span.hpp>
