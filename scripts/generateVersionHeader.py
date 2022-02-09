@@ -23,7 +23,10 @@ try:
     branch = repo.active_branch.name
 except:
     print("git repository is in detached head state")
-currentTime = str(datetime.datetime.now().isoformat())
+
+# build time in 15 minute intervals to avoid new compilation every time
+now = datetime.datetime.now()
+currentTime = "%d-%02d-%02dT%02d:%02d:00" % (now.year, now.month, now.day, now.hour, now.minute - now.minute % 15)
 
 
 fileContent = '#define BUILD_INFO_COMMIT_SHORT 0x' + commitHashShort + '\n'
