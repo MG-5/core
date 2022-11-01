@@ -1,6 +1,8 @@
 #include "core/hash.hpp"
+#include "core/BuildConfiguration.hpp"
+#include "core/SafeAssert.h"
 
-#ifndef BUILDCONFIG_TESTING_BUILD
+#if OTTOCAR_IS_EMBEDDED_BUILD()
 extern char _sidata;
 extern char _sdata;
 extern char _edata;
@@ -12,7 +14,7 @@ constexpr uint32_t FlashStartAddress = 0x08000000;
 
 uint32_t getBinarySize()
 {
-#ifndef BUILDCONFIG_TESTING_BUILD
+#if OTTOCAR_IS_EMBEDDED_BUILD() && !defined(__cppcheck__)
     return (&_sidata - reinterpret_cast<char *>(FlashStartAddress)) + (&_edata - &_sdata);
 #else
     return 0;
@@ -21,21 +23,27 @@ uint32_t getBinarySize()
 
 uint64_t fnv(const uint8_t *data, const uint8_t *const dataEnd)
 {
-    return bus_node_base::fnvWithSeed(bus_node_base::HASH_SEED, data, dataEnd);
+    return core::hash::fnvWithSeed(core::hash::HASH_SEED, data, dataEnd);
 }
 } // namespace
 
-namespace bus_node_base
+namespace core::hash
 {
 uint64_t computeFirmwareHash()
 {
+#if OTTOCAR_IS_EMBEDDED_BUILD()
     return fnv(reinterpret_cast<uint8_t *>(FlashStartAddress),
                reinterpret_cast<uint8_t *>(FlashStartAddress) + getBinarySize());
+#else
+    return FirmwareHashTestingValue;
+#endif
 }
 
 uint64_t fnvWithSeed(uint64_t hash, const uint8_t *data, const uint8_t *const dataEnd)
 {
-    constexpr uint64_t MagicPrime = 0x00000100000001b3;
+    SafeAssert(data < dataEnd);
+    SafeAssert(data != nullptr);
+    SafeAssert(dataEnd != nullptr);
 
     for (; data < dataEnd; data++)
     {

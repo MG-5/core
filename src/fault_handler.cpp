@@ -1,5 +1,8 @@
 #include "core/fault_handler.h"
 #include <stdint.h>
+#include "core/BuildConfiguration.hpp"
+
+#if OTTOCAR_IS_EMBEDDED_BUILD()
 
 /* The fault handler implementation calls a function called
 prvGetRegistersFromStack(). */
@@ -15,19 +18,25 @@ void __attribute__((aligned(4))) faultHandler(void)
                    " handler2_address_const: .word prvGetRegistersFromStack    \n");
 }
 
-__attribute__((weak)) void prvGetRegistersFromStack(uint32_t *pulFaultStackAddress)
+extern "C" [[noreturn]] void prvGetRegistersFromStack(uint32_t *pulFaultStackAddress)
 {
     /* These are volatile to try and prevent the compiler/linker optimising them
     away as the variables never actually get used.  If the debugger won't show the
     values of the variables, make them global my moving their declaration outside
     of this function. */
+
+    /* Debugging steps: Convert the content of 'pc' to hex and search for the
+    address in the builds .list. That should get you at least somewhere.
+    If the address doesn't exist, your firmware tried to access an illegal memory location.
+    If the address only contains 0xA5, you ran into a FreeRTOS stack overflow. 0xA5 is the
+    detection pattern it uses internally.*/
     volatile uint32_t r0;
     volatile uint32_t r1;
     volatile uint32_t r2;
     volatile uint32_t r3;
     volatile uint32_t r12;
-    volatile uint32_t lr;  /* Link register. */
-    volatile uint32_t pc;  /* Program counter. */
+    volatile uint32_t lr;  /* Link register. Function the firmware is executing */
+    volatile uint32_t pc;  /* Program counter. Current line being executed */
     volatile uint32_t psr; /* Program status register. */
 
     r0 = pulFaultStackAddress[0];
@@ -49,10 +58,19 @@ __attribute__((weak)) void prvGetRegistersFromStack(uint32_t *pulFaultStackAddre
     (void)pc;
     (void)psr;
 
-#ifdef DEBUG
-    __asm("bkpt");
-#endif
+    if constexpr (core::BuildConfiguration::isDebugBuild)
+    {
+        __asm("bkpt");
+    }
 
     for (;;)
         ;
 }
+
+#else
+
+void faultHandler(void)
+{
+}
+
+#endif
