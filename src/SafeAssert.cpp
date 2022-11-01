@@ -1,7 +1,7 @@
 #include "core/SafeAssert.h"
 #include "core/BuildConfiguration.hpp"
 
-#if OTTOCAR_IS_EMBEDDED_BUILD()
+#if IS_EMBEDDED_BUILD()
 #include <FreeRTOS.h>
 #include <task.h>
 void SafeAssert_Aux(bool condition, int line, const char *file)
@@ -9,7 +9,7 @@ void SafeAssert_Aux(bool condition, int line, const char *file)
     if (!condition)
     {
         taskDISABLE_INTERRUPTS();
-        if constexpr (core::BuildConfiguration::isDebugBuild)
+        if constexpr (core::BuildConfiguration::IsDebugBuild)
         {
             __asm("bkpt");
         }

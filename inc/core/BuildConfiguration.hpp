@@ -13,48 +13,48 @@ namespace core
  */
 struct BuildConfiguration
 {
-#if OTTOCAR_IS_EMBEDDED_BUILD()
-    static constexpr bool isEmbeddedBuild = true;
+#if IS_EMBEDDED_BUILD()
+    static constexpr bool IsEmbeddedBuild = true;
 #else
-    static constexpr bool isEmbeddedBuild = false;
+    static constexpr bool IsEmbeddedBuild = false;
 #endif
 
-#if OTTOCAR_IS_TESTING_BUILD()
-    static constexpr bool isTestingBuild = true;
+#if IS_TESTING_BUILD()
+    static constexpr bool IsTestingBuild = true;
 #else
-    static constexpr bool isTestingBuild = false;
+    static constexpr bool IsTestingBuild = false;
 #endif
 
-#if OTTOCAR_IS_FUZZING_BUILD()
-    static constexpr bool isFuzzingBuild = true;
+#if IS_FUZZING_BUILD()
+    static constexpr bool IsFuzzingBuild = true;
 #else
-    static constexpr bool isFuzzingBuild = false;
+    static constexpr bool IsFuzzingBuild = false;
 #endif
 
-#if OTTOCAR_IS_EMULATOR_BUILD()
-    static constexpr bool isEmulatorBuild = true;
+#if IS_EMULATOR_BUILD()
+    static constexpr bool IsEmulatorBuild = true;
 #else
-    static constexpr bool isEmulatorBuild = false;
+    static constexpr bool IsEmulatorBuild = false;
 #endif
 
-#if defined(OTTOCAR_BUILDCONFIG_DEBUG)
-    static constexpr bool isDebugBuild = true;
+#if defined(BUILDCONFIG_DEBUG)
+    static constexpr bool IsDebugBuild = true;
 #else
-    static constexpr bool isDebugBuild = false;
+    static constexpr bool IsDebugBuild = false;
 #endif
 
-#if defined(OTTOCAR_BUILDCONFIG_RELEASE)
-    static constexpr bool isReleaseBuild = true;
+#if defined(BUILDCONFIG_RELEASE)
+    static constexpr bool IsReleaseBuild = true;
 #else
-    static constexpr bool isReleaseBuild = false;
+    static constexpr bool IsReleaseBuild = false;
 #endif
 
     static constexpr void checkBuild()
     {
         // sanity checks for macros
-        static_assert(
-            ((isEmbeddedBuild ? 1 : 0) + (isTestingBuild ? 1 : 0) + (isFuzzingBuild ? 1 : 0) + (isEmulatorBuild ? 1 : 0)) == 1);
-        static_assert(((isDebugBuild ? 1 : 0) + (isReleaseBuild ? 1 : 0)) == 1);
+        static_assert(((IsEmbeddedBuild ? 1 : 0) + (IsTestingBuild ? 1 : 0) +
+                       (IsFuzzingBuild ? 1 : 0) + (IsEmulatorBuild ? 1 : 0)) == 1);
+        static_assert(((IsDebugBuild ? 1 : 0) + (IsReleaseBuild ? 1 : 0)) == 1);
     }
 };
 

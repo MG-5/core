@@ -8,7 +8,7 @@
  *
  */
 
-#if OTTOCAR_IS_EMBEDDED_BUILD()
+#if IS_EMBEDDED_BUILD()
 extern "C"
 {
 #include <FreeRTOS.h>

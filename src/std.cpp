@@ -1,5 +1,5 @@
 #include "core/BuildConfiguration.hpp"
-#if OTTOCAR_IS_EMBEDDED_BUILD()
+#if IS_EMBEDDED_BUILD()
 namespace std
 {
 void __throw_bad_function_call()

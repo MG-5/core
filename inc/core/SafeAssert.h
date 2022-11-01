@@ -1,6 +1,6 @@
 #pragma once
-#include <stdbool.h> // NOLINT
 #include "BuildConfigurationTypes.h"
+#include <stdbool.h> // NOLINT
 
 /**
  * @brief Build configuration independant assert
@@ -28,7 +28,7 @@ extern "C"
 }
 #endif
 
-#if !OTTOCAR_IS_EMBEDDED_BUILD()
+#if !IS_EMBEDDED_BUILD()
 #define SafeAssert(cond) SafeAssert_Aux(cond, __LINE__, __FILE__) // NOLINT
 #else
 // avoids compiling in a bunch of path strings for embedded

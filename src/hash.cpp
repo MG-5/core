@@ -2,7 +2,7 @@
 #include "core/BuildConfiguration.hpp"
 #include "core/SafeAssert.h"
 
-#if OTTOCAR_IS_EMBEDDED_BUILD()
+#if IS_EMBEDDED_BUILD()
 extern char _sidata;
 extern char _sdata;
 extern char _edata;
@@ -14,7 +14,7 @@ constexpr uint32_t FlashStartAddress = 0x08000000;
 
 uint32_t getBinarySize()
 {
-#if OTTOCAR_IS_EMBEDDED_BUILD() && !defined(__cppcheck__)
+#if IS_EMBEDDED_BUILD() && !defined(__cppcheck__)
     return (&_sidata - reinterpret_cast<char *>(FlashStartAddress)) + (&_edata - &_sdata);
 #else
     return 0;
@@ -31,7 +31,7 @@ namespace core::hash
 {
 uint64_t computeFirmwareHash()
 {
-#if OTTOCAR_IS_EMBEDDED_BUILD()
+#if IS_EMBEDDED_BUILD()
     return fnv(reinterpret_cast<uint8_t *>(FlashStartAddress),
                reinterpret_cast<uint8_t *>(FlashStartAddress) + getBinarySize());
 #else
@@ -52,4 +52,4 @@ uint64_t fnvWithSeed(uint64_t hash, const uint8_t *data, const uint8_t *const da
 
     return hash;
 }
-} // namespace bus_node_base
+} // namespace core::hash

@@ -1,8 +1,8 @@
 #include "core/fault_handler.h"
-#include <stdint.h>
 #include "core/BuildConfiguration.hpp"
+#include <stdint.h>
 
-#if OTTOCAR_IS_EMBEDDED_BUILD()
+#if IS_EMBEDDED_BUILD()
 
 /* The fault handler implementation calls a function called
 prvGetRegistersFromStack(). */
@@ -58,7 +58,7 @@ extern "C" [[noreturn]] void prvGetRegistersFromStack(uint32_t *pulFaultStackAdd
     (void)pc;
     (void)psr;
 
-    if constexpr (core::BuildConfiguration::isDebugBuild)
+    if constexpr (core::BuildConfiguration::IsDebugBuild)
     {
         __asm("bkpt");
     }
