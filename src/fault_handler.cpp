@@ -1,6 +1,6 @@
 #include "core/fault_handler.h"
 #include "core/BuildConfiguration.hpp"
-#include <stdint.h>
+#include <cstdint>
 
 #if IS_EMBEDDED_BUILD()
 
@@ -8,6 +8,7 @@
 prvGetRegistersFromStack(). */
 void __attribute__((aligned(4))) faultHandler(void)
 {
+#if (__ARM_ARCH == 7) // only for Cortex-M3, Cortex-M4 and Cortex-M7
     __asm volatile(" tst lr, #4                                                \n"
                    " ite eq                                                    \n"
                    " mrseq r0, msp                                             \n"
@@ -16,6 +17,17 @@ void __attribute__((aligned(4))) faultHandler(void)
                    " ldr r2, handler2_address_const                            \n"
                    " bx r2                                                     \n"
                    " handler2_address_const: .word prvGetRegistersFromStack    \n");
+
+#elif (__ARM_ARCH == 6) // only for Cortex-M0, Arm Cortex-M0+ and Arm Cortex-M1
+    __asm volatile(" mrs r0, msp                                            \n"
+                   " mov r1, lr                                             \n"
+                   " mov r2, #4                                             \n"
+                   " tst r1, r2                                             \n"
+                   " beq prvGetRegistersFromStack                           \n"
+                   " mrs r0, psp                                            \n"
+                   " ldr r1, =prvGetRegistersFromStack                      \n"
+                   " bx r1");
+#endif
 }
 
 extern "C" [[noreturn]] void prvGetRegistersFromStack(uint32_t *pulFaultStackAddress)
