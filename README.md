@@ -19,7 +19,7 @@ else()
 endif()
 ```
 
-Core library containing the build system, common functionalities required by all firmwares and [Tracealyzer for FreeRTOS](https://percepio.com/tz/freertostrace/).
+Core library containing the build system, common functionalities required by all firmwares.
 
 TODO UPDATE, MOVE OVER CUBEMX SETUP OF CORE
 
@@ -35,7 +35,6 @@ Requires following libraries:
 Exports following libraries:
 
 - core
-- tracealyzer
 
 Core features automatic CMake translation of CubeMX Makefiles when the following is added to the Makefile
 

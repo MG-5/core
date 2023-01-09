@@ -1,26 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 project(core VERSION 0.0.1 LANGUAGES CXX C)
 
-add_library(tracealyzer
-        Tracealyzer/Src/SEGGER_RTT.c
-        Tracealyzer/Src/trcKernelPort.c
-        Tracealyzer/Src/trcSnapshotRecorder.c
-        Tracealyzer/Src/trcStreamingPort.c
-        Tracealyzer/Src/trcStreamingRecorder.c
-        src/trace.cpp
-        )
-target_include_directories(tracealyzer PUBLIC
-        Tracealyzer/Include
-        )
-target_link_libraries(tracealyzer PUBLIC
-        core freertos)
-
-# following target doesn't compile on non embedded builds
-# explicitly exclude from "All" build triggered by CTest
-set_target_properties(tracealyzer PROPERTIES
-        EXCLUDE_FROM_ALL TRUE
-        EXCLUDE_FROM_DEFAULT_BUILD TRUE)
-
 # generate build information every time compile is started
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/include/core)
 add_custom_target(generateVersionHeader
@@ -45,7 +25,11 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVer
 
 add_subdirectory(libraries/span)
 
-target_link_libraries(${PROJECT_NAME} freertos hal_headers span)
+target_link_libraries(${PROJECT_NAME} 
+    #freertos 
+    hal_headers
+    span
+    )
 
 # embedded / testing / fuzzing / emulator
 if (NOT DEFINED core_BUILDCONFIGURATION)
