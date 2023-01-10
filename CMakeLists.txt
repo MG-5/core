@@ -25,12 +25,6 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVer
 
 add_subdirectory(libraries/span)
 
-target_link_libraries(${PROJECT_NAME} 
-    freertos 
-    hal_headers
-    span
-    )
-
 # embedded / testing / fuzzing / emulator
 if (NOT DEFINED core_BUILDCONFIGURATION)
     message(FATAL_ERROR "Required variable core_BUILDCONFIGURATION is not defined")
@@ -65,7 +59,19 @@ endif ()
 if (NOT DEFINED isEmbeddedCompiler)
     message(FATAL_ERROR "Required variable isEmbeddedCompiler is not in scope")
 endif ()
-if (NOT ${isEmbeddedCompiler})
+
+if (${isEmbeddedCompiler})
+    target_link_libraries(${PROJECT_NAME} 
+    freertos 
+    hal_headers
+    span
+    )
+else ()
+    target_link_libraries(${PROJECT_NAME}  # link without freertos
+    hal_headers
+    span
+    )
+
     include(CTest)
     find_package(PkgConfig)
     pkg_search_module(GTEST REQUIRED gtest)
