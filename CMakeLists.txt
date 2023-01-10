@@ -26,7 +26,7 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVer
 add_subdirectory(libraries/span)
 
 target_link_libraries(${PROJECT_NAME} 
-    #freertos 
+    freertos 
     hal_headers
     span
     )
