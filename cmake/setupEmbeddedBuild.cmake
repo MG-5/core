@@ -55,6 +55,7 @@ function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard)
             --static
             -Wl,--gc-sections
             -Wl,--print-memory-usage
+            -Wl,--no-warn-rwx-segments
             -Wl,-Map=${firmwareName}.map
             -u _printf_float
             -Wl,--start-group -lc_nano -lgcc -Wl,--end-group
