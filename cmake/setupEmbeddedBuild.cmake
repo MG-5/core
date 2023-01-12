@@ -57,7 +57,7 @@ function(SETUP_BUILD halDirectory firmwareName Cstandard CXXstandard)
             -Wl,--print-memory-usage
             -Wl,-Map=${firmwareName}.map
             -u _printf_float
-            -Wl,--start-group -lc_nano -lgcc -lnosys -Wl,--end-group
+            -Wl,--start-group -lc_nano -lgcc -Wl,--end-group
             -T${CMAKE_CURRENT_SOURCE_DIR}/${MakeExport_LDSCRIPT}
             ${MakeExport_MCU_Flags})
 endfunction()
