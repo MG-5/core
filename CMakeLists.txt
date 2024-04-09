@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 project(core VERSION 0.0.1 LANGUAGES CXX C)
 
 # generate build information every time compile is started
