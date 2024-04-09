@@ -23,8 +23,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         )
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVersionHeader)
 
-add_subdirectory(libraries/span)
-
 # embedded / testing / fuzzing / emulator
 if (NOT DEFINED core_BUILDCONFIGURATION)
     message(FATAL_ERROR "Required variable core_BUILDCONFIGURATION is not defined")
@@ -64,12 +62,10 @@ if (${isEmbeddedCompiler})
     target_link_libraries(${PROJECT_NAME} 
     freertos 
     hal_headers
-    span
     )
 else ()
     target_link_libraries(${PROJECT_NAME}  # link without freertos
     hal_headers
-    span
     )
 
     include(CTest)

@@ -1,3 +1,0 @@
-[submodule "libraries/span"]
-	path = libraries/span
-	url = https://github.com/tcbrindle/span.git
