@@ -1,73 +1,53 @@
-cmake_minimum_required(VERSION 3.5)
-project(core VERSION 0.0.1 LANGUAGES CXX C)
+cmake_minimum_required(VERSION 3.22)
+project(core VERSION 0.0.1 LANGUAGES CXX C ASM)
 
-# generate build information every time compile is started
-file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/include/core)
-add_custom_target(generateVersionHeader
-        ${PROJECT_SOURCE_DIR}/scripts/generateVersionHeader.py
-        ${PROJECT_SOURCE_DIR}/../
-        ${PROJECT_BINARY_DIR}/include/core/Version.h
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+include(${CMAKE_CURRENT_LIST_DIR}/detectCompilerType.cmake)
+DETECT_COMPILER_TYPE()
 
-add_library(${PROJECT_NAME} STATIC
-        src/abi.cpp
-        src/fault_handler.cpp
-        src/hash.cpp
-        src/SafeAssert.cpp
-        src/std.cpp
-        )
-target_include_directories(${PROJECT_NAME} PUBLIC
-        inc
-        chip
-        ${PROJECT_BINARY_DIR}/include
-        )
-add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} generateVersionHeader)
+add_library(
+    ${PROJECT_NAME} STATIC
+    src/abi.cpp
+    src/fault_handler.cpp
+    src/SafeAssert.cpp
+    src/std.cpp
+)
+
+target_include_directories(
+    ${PROJECT_NAME} PUBLIC
+    inc
+)
+
+target_link_libraries(
+    ${PROJECT_NAME}
+    stm32cubemx
+)
 
 # embedded / testing / fuzzing / emulator
 if (NOT DEFINED core_BUILDCONFIGURATION)
-    message(FATAL_ERROR "Required variable core_BUILDCONFIGURATION is not defined")
+    message(FATAL_ERROR "Required variable core_BUILDCONFIGURATION is not defined. \
+    Use set(core_BUILDCONFIGURATION <embedded|testing|fuzzing|emulator>) in your CMakeLists.txt file.")
 endif()
 if (core_BUILDCONFIGURATION STREQUAL "embedded")
     target_compile_definitions(${PROJECT_NAME} PUBLIC BUILDTYPE=2)
-    message("You chose embedded build configuration.")
+    message("You choose embedded build configuration.")
 elseif (core_BUILDCONFIGURATION STREQUAL "testing")
     target_compile_definitions(${PROJECT_NAME} PUBLIC BUILDTYPE=3)
-    message("You chose testing build configuration.")
+    message("You choose testing build configuration.")
 elseif (core_BUILDCONFIGURATION STREQUAL "fuzzing")
     target_compile_definitions(${PROJECT_NAME} PUBLIC BUILDTYPE=4)
-    message("You chose fuzzing build configuration.")
+    message("You choose fuzzing build configuration.")
 elseif (core_BUILDCONFIGURATION STREQUAL "emulator")
     target_compile_definitions(${PROJECT_NAME} PUBLIC BUILDTYPE=5)
-    message("You chose emulator build configuration.")
+    message("You choose emulator build configuration.")
 else ()
-    message(FATAL_ERROR "Please define a macro for your core_BUILDCONFIGURATION. You chose '${core_BUILDTYPE}'")
-endif ()
-
-# release / debug
-if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-    target_compile_definitions(${PROJECT_NAME} PUBLIC BUILDCONFIG_DEBUG)
-    message("Buildtype is DEBUG.")
-elseif ("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
-    target_compile_definitions(${PROJECT_NAME} PUBLIC BUILDCONFIG_RELEASE)
-    message("Buildtype is RELEASE.")
-else ()
-    message(FATAL_ERROR "Please define a macro for your CMAKE_BUILD_TYPE. You chose '${CMAKE_BUILD_TYPE}' which is not implemented yet. Did you forget to add -DCMAKE_BUILD_TYPE=Release or -DCMAKE_BUILD_TYPE=Debug?")
+    message(FATAL_ERROR "Please define a macro for your core_BUILDCONFIGURATION. You choose '${core_BUILDTYPE}'")
 endif ()
 
 if (NOT DEFINED isEmbeddedCompiler)
     message(FATAL_ERROR "Required variable isEmbeddedCompiler is not in scope")
 endif ()
 
-if (${isEmbeddedCompiler})
-    target_link_libraries(${PROJECT_NAME} 
-    freertos 
-    hal_headers
-    )
-else ()
-    target_link_libraries(${PROJECT_NAME}  # link without freertos
-    hal_headers
-    )
-
+if (NOT ${isEmbeddedCompiler})
     include(CTest)
     find_package(PkgConfig)
     pkg_search_module(GTEST REQUIRED gtest)
@@ -76,7 +56,6 @@ else ()
     add_executable(${PROJECT_NAME}_test
             tests/src/main.cpp
             tests/src/SafeAssertTest.cpp
-            tests/src/HashTest.cpp
             )
     target_include_directories(${PROJECT_NAME}_test PRIVATE
             tests/include)

@@ -8,23 +8,36 @@
             "type": "cortex-debug",
             "request": "launch",
             "name": "Debug (J-Link)",
-            "cwd": "${workspaceFolder}",
-            "executable": "${workspaceFolder}/build/debug/???.elf",
+            "cwd": "${command:cmake.buildDirectory}",
+            "executable": "${workspaceFolderBasename}.elf",
             "serverpath": "JLinkGDBServer",
             "servertype": "jlink",
-            "device": "???",
+            "device": "[insert_device_name]", // e.g. STM32F103RE
             "interface": "swd",
-            "runToMain": true
+            "runToEntryPoint": "main"
         },
         {
             "type": "cortex-debug",
             "request": "launch",
             "name": "Debug (J-Link, RTOS-aware)",
-            "cwd": "${workspaceFolder}",
-            "executable": "${workspaceFolder}/build/debug/???.elf",
+            "cwd": "${command:cmake.buildDirectory}",
+            "executable": "${workspaceFolderBasename}.elf",
             "serverpath": "JLinkGDBServer",
             "servertype": "jlink",
-            "device": "???",
+            "device": "[insert_device_name]", // e.g. STM32F103RE
+            "interface": "swd",
+            "rtos": "FreeRTOS",
+            "runToEntryPoint": "main"
+        },
+        {
+            "type": "cortex-debug",
+            "request": "attach",
+            "name": "Attach (J-Link, RTOS-aware)",
+            "cwd": "${command:cmake.buildDirectory}",
+            "executable": "${workspaceFolderBasename}.elf",
+            "serverpath": "JLinkGDBServer",
+            "servertype": "jlink",
+            "device": "[insert_device_name]", // e.g. STM32F103RE
             "interface": "swd",
             "rtos": "FreeRTOS"
         },
@@ -32,11 +45,11 @@
             "type": "cortex-debug",
             "request": "launch",
             "name": "Debug (ST-LINK)",
-            "cwd": "${workspaceFolder}",
-            "executable": "${workspaceFolder}/build/debug/???.elf",
+            "cwd": "${command:cmake.buildDirectory}",
+            "executable": "${workspaceFolderBasename}.elf",
             "servertype": "stutil",
-            "device": "???",
-            "runToMain": true
+            "device": "[insert_device_name]", // e.g. STM32F103RE
+            "runToEntryPoint": "main"
         }
     ]
 }
