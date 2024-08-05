@@ -1,5 +1,6 @@
 #include "core/fault_handler.h"
 #include "core/BuildConfiguration.hpp"
+#include "main.h"
 #include <cstdint>
 
 #if IS_EMBEDDED_BUILD()
@@ -74,6 +75,8 @@ extern "C" [[noreturn]] void prvGetRegistersFromStack(uint32_t *pulFaultStackAdd
     {
         __asm("bkpt");
     }
+    else
+        NVIC_SystemReset(); // at release builds just reset the chip
 
     for (;;)
         ;
