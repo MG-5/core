@@ -1,14 +1,10 @@
-#include "core/BuildConfiguration.hpp"
 #include <cstddef>
 
 /**
  * @brief Links together C++ and FreeRTOS heap handler. Also sets up C++'s guts for embedded
- * environment. WARNING Can compile on amd64 without the "#if" guard but will cause
- * SEGFAULT when a class is used. So keep them!
- *
+ * environment. WARNING Do not compile on amd64 otherwise it will cause SEGFAULT when a class is used.
  */
 
-#if IS_EMBEDDED_BUILD()
 extern "C"
 {
 #include <FreeRTOS.h>
@@ -111,4 +107,3 @@ extern "C"
     {
     }
 }
-#endif

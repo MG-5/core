@@ -1,14 +1,15 @@
 #include "core/fault_handler.h"
-#include "core/BuildConfiguration.hpp"
-#include "main.h"
-#include <cstdint>
 
-#if IS_EMBEDDED_BUILD()
+#include "main.h"
+#include <FreeRTOS.h>
+#include <cstdint>
 
 /* The fault handler implementation calls a function called
 prvGetRegistersFromStack(). */
 void __attribute__((aligned(4))) faultHandler(void)
 {
+    portDISABLE_INTERRUPTS();
+
 #if (__ARM_ARCH == 7) // only for Cortex-M3, Cortex-M4 and Cortex-M7
     __asm volatile(" tst lr, #4                                                \n"
                    " ite eq                                                    \n"
@@ -71,21 +72,15 @@ extern "C" [[noreturn]] void prvGetRegistersFromStack(uint32_t *pulFaultStackAdd
     (void)pc;
     (void)psr;
 
-    if constexpr (core::BuildConfiguration::IsDebugBuild)
-    {
-        __asm("bkpt");
-    }
-    else
-        NVIC_SystemReset(); // at release builds just reset the chip
-
-    for (;;)
-        ;
-}
-
+#ifdef DEBUG
+    __asm("bkpt");
+#elif defined(RELEASE)
+    NVIC_SystemReset();
 #else
-
-void faultHandler(void)
-{
-}
-
+#error "No build configuration set"
 #endif
+
+    while (true)
+    {
+    }
+}
