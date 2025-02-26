@@ -74,10 +74,8 @@ extern "C" [[noreturn]] void prvGetRegistersFromStack(uint32_t *pulFaultStackAdd
 
 #ifdef DEBUG
     __asm("bkpt");
-#elif defined(RELEASE)
-    NVIC_SystemReset();
 #else
-#error "No build configuration set"
+    NVIC_SystemReset();
 #endif
 
     while (true)
