@@ -1,0 +1,4 @@
+[submodule "RTT"]
+	path = RTT
+	url = https://github.com/SEGGERMicro/RTT.git
+	branch = main
